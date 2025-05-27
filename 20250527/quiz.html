@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      width: 500px;
+      height: 500px;
+      border: 3px solid black;
+    }
+    .box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      font-size: 2rem;
+      background: red;
+      animation: rrr 1s infinite cubic-bezier(0.67,-0.55, 0.49, 1.61);
+    }
+    @keyframes rrr {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box">0</div>
+    <div class="box">1</div>
+    <div class="box">2</div>
+    <div class="box">3</div>
+    <div class="box">4</div>
+  </div>
+  
+  <script>
+    {
+      const boxes = document.querySelectorAll('.box');
+      let numberOfBoxes = boxes.length;
+
+      function checkNumberOfBox() {
+        if (numberOfBoxes == 0) {
+          const pElem = document.createElement('p');
+          pElem.textContent = '축하해요!';
+          document.body.append(pElem);
+        }
+      }
+
+      function clickBoxHandler(e) {
+        // this.remove();
+        e.currentTarget.remove();
+        numberOfBoxes--;
+        console.log('남은 박스: ' + numberOfBoxes);
+
+        checkNumberOfBox();
+      }
+
+      function init() {
+        boxes.forEach((box) => {
+          box.style.left = Math.random() * 450 + 'px';
+          box.style.top = Math.random() * 450 + 'px';
+
+          box.addEventListener('click', clickBoxHandler);
+        });
+      }
+
+      init();
+    }
+  </script>
+</body>
+</html>

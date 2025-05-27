@@ -1,0 +1,59 @@
+@charset "UTF-8";
+
+:root {
+  --primary-color: #007bff;
+  --secondary-color: #f5f5f5;
+}
+
+body {
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+/* 탭 메뉴 스타일 */
+.tab-menu {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+}
+
+.tab-item {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tab-item.active {
+  background-color: var(--primary-color);
+}
+
+.tab-item.active a {
+  color: white;
+}
+
+.tab-item a {
+  color: #333;
+  text-decoration: none;
+  pointer-events: none;
+}
+
+/* 탭 콘텐츠 영역 */
+.tab-content {
+  padding: 2rem;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
