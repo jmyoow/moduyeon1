@@ -41,8 +41,9 @@ h2 {
   color: white;
 }
 
-.tab-item a {
+.tab-item a,
+.tab-item i {
   color: #333;
   text-decoration: none;
-  pointer-events: none;
+  /* pointer-events: none; */
 }

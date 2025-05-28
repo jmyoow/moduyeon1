@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    class Animal {
+      constructor(obj = {}) {
+        this.name = obj.name || '무명';
+        this.type = obj.type || '고양이';
+        this.age = obj.age || '나이모름';
+      }
+
+      introduce() {
+        console.log('안녕, 나는 ' + this.name + '라고 하고 ' + this.age + '살인 ' + this.type + '야. 만나서 반가워!');
+      }
+    }
+
+    const ari = new Animal();
+    ari.introduce();
+  </script>
+</body>
+</html>

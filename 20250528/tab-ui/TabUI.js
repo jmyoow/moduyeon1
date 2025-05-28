@@ -10,10 +10,9 @@ export class TabUI {
   }
 
   activateTab(index) {
-    // console.log('activateTab!!', index);
-    // console.log(index, !index);
-    if (index !== 0 && !index) return;
+    // if (index !== 0 && !index) return;
     // 0은 false로 판정되므로 특별히 처리. 0일 경우는 잘 동작하도록..
+    if (typeof index !== 'number') return;
 
     // 현재 활성화된 아이템 비활성화
     this.menuItemArray[this.currentIndex].classList.remove('active');
@@ -27,13 +26,26 @@ export class TabUI {
     const tabMenu = document.createElement('ul');
     tabMenu.classList.add('tab-menu');
 
+    // this.menuTextArray.forEach((text, index) => {
+    //   const li = document.createElement('li');
+    //   li.textContent = text;
+    //   li.dataset.index = index;
+    //   li.classList.add('tab-item');
+    //   // li.className = 'tab-item';
+    //   tabMenu.append(li);
+    //   this.menuItemArray.push(li);
+    // });
+
     this.menuTextArray.forEach((text, index) => {
-      // console.log(text, index)
       const li = document.createElement('li');
-      li.textContent = text;
       li.dataset.index = index;
       li.classList.add('tab-item');
-      // li.className = 'tab-item';
+
+      li.innerHTML = `
+        <i style="pointer-events: none">🤨</i>
+        <a style="pointer-events: none" href="#">${text}</a>
+      `;
+
       tabMenu.append(li);
       this.menuItemArray.push(li);
     });
@@ -47,7 +59,10 @@ export class TabUI {
       
       // 1
       if (event.target.classList.contains('tab-item')) {
-        const index = event.target.dataset.index;
+        // const index = Number(event.target.dataset.index);
+        // const index = +event.target.dataset.index;
+        const index = event.target.dataset.index*1;
+        // 문자열 숫자 "1"를 진짜 숫자(number)로 바꾸기
         this.activateTab(index);
       }
 
