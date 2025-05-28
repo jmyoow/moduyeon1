@@ -1,0 +1,27 @@
+body {
+  font-family: sans-serif;
+  padding: 2rem;
+}
+input {
+  padding: 5px;
+  font-size: 16px;
+  width: 100px;
+}
+button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  font-size: 16px;
+}
+#balance {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+#log {
+  margin-top: 1rem;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+#log li {
+  padding: 2px 0;
+}
