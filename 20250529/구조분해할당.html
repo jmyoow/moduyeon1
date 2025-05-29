@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>구조분해할당</title>
+</head>
+<body>
+  <p>
+    구조분해할당: 객체(Object)의 구조를 분해해서 변수에 할당함.
+  </p>
+  <script>
+    const user = {
+      name: '숀',
+      age: 30,
+      hobby: '영화보기'
+    };
+
+    // const name = user.name;
+    // const age = user.age;
+    // const hobby = user.hobby;
+
+    const { name, age, hobby } = user;
+
+    console.log(name, age, hobby);
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.mini-alert-backdrop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.mini-alert {
+  min-width: 150px;
+  max-width: 300px;
+  padding: 2rem;
+  border-radius: 8px;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.2) 15px 15px 0;
+}
