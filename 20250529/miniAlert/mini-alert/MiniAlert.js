@@ -1,4 +1,17 @@
 export default class MiniAlert {
+  /**
+   * @typedef {Object} MiniAlertOptions
+   * @property {string} [title] - 모달 제목
+   * @property {string} [message] - 모달 메시지
+   * @property {Function} [onClose] - 닫힐 때 호출되는 콜백 함수
+   * @property {boolean} [onCloseBackdrop] - 배경 클릭 시 닫을지 여부
+   */
+
+  /**
+   * 간단한 알림 모달을 보여줌
+   * @param {MiniAlertOptions} [options]
+   */
+  // jsdoc 주석
   static fire({ title = "알림", message = "", onClose = null, onCloseBackdrop = true } = {}) {
     // CSS
     if (!document.getElementById('mini-alert-style')) {
@@ -66,4 +79,4 @@ export default class MiniAlert {
   }
 }
 
-window.MiniAlert = MiniAlert;
+window.MiniAlert = MiniAlert; // 외부에서 접근 가능하게

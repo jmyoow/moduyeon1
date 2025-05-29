@@ -19,6 +19,7 @@ export default class BankAccount {
     if (amount > this.#balance) {
       // alert('잔액이 부족합니다.');
       Swal.fire("잔액이 부족합니다.");
+      
       // return;
       throw new Error('잔액이 부족합니다.');
     }
