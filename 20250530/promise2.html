@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        const result = prompt('니 이름이 뭐니?');
+        if (result === '모두연') {
+          // 성공
+          // alert('이름이 맞았어요!');
+          resolve('이름이 맞았어요!');
+        } else {
+          // 실패
+          // alert('그거 아니에요!');
+          reject('그거 아니에요!');
+        }
+      }, 1000);
+    }).then(result => {
+        console.log(result);
+      })
+      .catch(result => {
+        console.log(result);
+      })
+      .finally(() => {
+        console.log('finally~~~');
+      });
+
+    // 성공: fulfilled
+    // 실패: rejected
+    // 처리중: pending
+  </script>
+</body>
+</html>

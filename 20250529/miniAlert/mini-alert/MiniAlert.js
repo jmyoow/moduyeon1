@@ -79,4 +79,4 @@ export default class MiniAlert {
   }
 }
 
-window.MiniAlert = MiniAlert; // 외부에서 접근 가능하게
+window.MiniAlert = MiniAlert; // 외부에서 접근 가능하게(전역에서 접근 가능하게)

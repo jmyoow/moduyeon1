@@ -3,7 +3,7 @@ export class TabUI {
     this.menuTextArray = menuTextArray;
     this.menuItemArray = []; // li.menu-item 객체들을 담을 배열
     this.currentIndex = index;
-    this.container = document.querySelector(selector);
+    this.container = document.querySelector(selector) || document.body;
 
     this.initDOM();
     this.activateTab(this.currentIndex);
