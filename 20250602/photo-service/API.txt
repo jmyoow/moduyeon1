@@ -1,0 +1,13 @@
+https://web-production-6707e.up.railway.app
+
+업로드 파일 저장 폴더
+/uploads
+
+
+[POST]
+/api/upload
+/api/choose-frame
+/api/delivery
+
+[GET]
+/api/photos

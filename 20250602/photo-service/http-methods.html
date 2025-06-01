@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTTP Methods Practice</title>
+</head>
+<body>
+  <h2>🚀 HTTP 메서드 실습</h2>
+
+  <!-- 버튼을 누르면 각 메서드(GET, POST 등)를 실행함 -->
+  <button onclick="getData()">GET(가져오기)</button>
+  <button onclick="postData()">POST(추가)</button>
+  <button onclick="putData()">PUT(전체 수정)</button>
+  <button onclick="patchData()">PATCH(일부 수정)</button>
+  <button onclick="deleteData()">DELETE(삭제)</button>
+
+  <!-- 결과를 출력할 영역 -->
+  <pre id="output"></pre>
+
+  <script>
+    // 결과를 출력할 HTML 요소를 가져옴
+    const output = document.getElementById('output');
+
+    // 요청을 보낼 기본 주소(API 주소)
+    const BASE_URL = 'https://jsonplaceholder.typicode.com/posts';
+
+    // 화면에 데이터를 보기 좋게 출력해주는 함수
+    function show(data) {
+      // JSON.stringify: 자바스크립트 객체를 문자열로 바꿈
+      // 두 번째 인자 null은 필터를 안 쓰겠다는 의미
+      // 세 번째 인자 2는 들여쓰기(예쁘게 정렬)
+      output.textContent = JSON.stringify(data, null, 2);
+    }
+
+    // 1️⃣ GET 요청 – 데이터 가져오기
+    async function getData() {
+      // 서버에 요청을 보내고 응답(response)을 기다림
+      const res = await fetch(BASE_URL);
+
+      // 응답에서 JSON 형식의 실제 데이터를 꺼냄
+      const data = await res.json();
+
+      // 처음 3개만 화면에 출력
+      show(data.slice(0, 3));
+    }
+
+    // 2️⃣ POST 요청 – 새로운 데이터 추가
+    async function postData() {
+      const res = await fetch(BASE_URL, {
+        method: 'POST', // 서버에 새 데이터를 추가하겠다는 의미
+        headers: {
+          'Content-Type': 'application/json' // 보내는 데이터가 JSON 형식임을 알려줌
+        },
+        body: JSON.stringify({
+          title: 'New Post',     // 새 글 제목
+          body: 'Hello world!',  // 새 글 내용
+          userId: 1              // 작성자 ID
+        })
+      });
+
+      const data = await res.json(); // 응답 데이터 받기
+      show(data); // 결과 출력
+    }
+
+    // 3️⃣ PUT 요청 – 기존 데이터 전체 수정
+    async function putData() {
+      const res = await fetch(`${BASE_URL}/1`, {
+        method: 'PUT', // 전체 내용을 새 걸로 덮어씀
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: 1,                         // 수정할 게시물 ID
+          title: 'Updated Title',       // 새 제목
+          body: 'Updated body',         // 새 내용
+          userId: 1
+        })
+      });
+
+      const data = await res.json();
+      show(data);
+    }
+
+    // 4️⃣ PATCH 요청 – 기존 데이터 일부만 수정
+    async function patchData() {
+      const res = await fetch(`${BASE_URL}/1`, {
+        method: 'PATCH', // 일부만 바꿀 때 사용
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          title: 'Partially Updated' // 제목만 바꿈
+        })
+      });
+
+      const data = await res.json();
+      show(data);
+    }
+
+    // 5️⃣ DELETE 요청 – 데이터 삭제
+    async function deleteData() {
+      const res = await fetch(`${BASE_URL}/1`, {
+        method: 'DELETE' // 해당 게시물을 삭제함
+      });
+
+      // 삭제 성공 여부 확인
+      if (res.ok) {
+        show({ message: '삭제 성공 ✅' });
+      } else {
+        show({ error: '삭제 실패 ❌' });
+      }
+    }
+  </script>
+</body>
+</html>
