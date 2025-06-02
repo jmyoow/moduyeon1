@@ -3,18 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <title>사진 인화 시뮬레이션</title>
+  <style>
+    #preview {
+      display: none;
+      width: 150px;
+    }
+  </style>
 </head>
 <body>
-  <h2>📸 사진 인화 서비스</h2>
+  <h2>📸 사진 인화 서비스 setTimeout</h2>
   <p>사진을 선택하세요:</p>
   <input type="file" id="file-input" accept="image/*" />
   <br><br>
+  <img id="preview">
+  <br>
   <button id="order-btn">📦 주문하기</button>
   <br>
   <ul id="log"></ul>
 
   <script>
-    
+    // 1. 이미지 업로드
+    // 2. 액자 선택
+    // 3. 배송 요청
+
+    const fileInput = document.getElementById('file-input');
+    const orderBtn = document.getElementById('order-btn');
+    const log = document.getElementById('log');
+    const preview = document.getElementById('preview');
+
+    let selectedFile = null; // 첨부한 현재 파일
+
+    fileInput.addEventListener('change', () => {
+      log.innerHTML = '';
+
+      console.log(fileInput.files)
+      const file = fileInput.files[0];
+
+      selectedFile = file;
+
+      const reader = new FileReader();
+      reader.addEventListener('load', e => {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      });
+      reader.readAsDataURL(file);
+    });
+
+    orderBtn.addEventListener('click', async () => {
+      if (!selectedFile) {
+        addLog('인쇄할 이미지를 선택하세요.');
+        return;
+      }
+
+      addLog('주문 프로세스 시작');
+      
+      try {
+        const photoId = await uploadPhoto(selectedFile);
+        const orderId = await chooseFrame(photoId);
+        const message = await requestDelivery(orderId);
+        addLog(message);
+      } catch (error) {
+        addLog(error);
+      } finally {
+        addLog('fin. 이용해주셔서 감사합니다.');
+      }
+    });
+
+    // 1. 사진 업로드
+    function uploadPhoto(file) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          // 파일명이 짧으면 에러 발생
+          if (file.name.length < 6) {
+            reject('파일 이름이 너무 짧아요.');
+            return;
+          }
+
+          addLog(`${file.name} 사진 업로드 완료`);
+          const photoId = `PHOTO_${Date.now()}`;
+          resolve(photoId);
+        }, 1000);
+      });
+    }
+
+    // 2. 액자 선택
+    function chooseFrame(photoId) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          addLog(`${photoId} 사진용 액자 선택 완료`);
+          const orderId = `ORDER_${Math.floor(Math.random()*100000)}`;
+          resolve(orderId);
+        }, 1500);
+      });
+    }
+
+    // 3. 배송 요청
+    function requestDelivery(orderId) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const message = `${orderId} 주문, 배송 요청 완료`;
+          resolve(message);
+        }, 1000);
+      });
+    }
+
+    function addLog(text) {
+      const li = document.createElement('li');
+      li.textContent = text;
+      log.append(li);
+    }
   </script>
 </body>
 </html>

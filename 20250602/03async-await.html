@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function question() {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const result = prompt('니 이름이 뭐니?');
+          if (result === '모두연') {
+            // 성공
+            // alert('이름이 맞았어요!');
+            resolve('이름이 맞았어요!');
+          } else {
+            // 실패
+            // alert('그거 아니에요!');
+            reject('그거 아니에요!');
+          }
+        }, 1000);
+      });
+    }
+
+    function step1(value) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(value);
+          resolve('step1의 resolve에 넣은 글');
+        }, 1000);
+      });
+    }
+
+    function step2(value) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.log(value);
+          resolve('step2의 resolve에 넣은 글');
+        }, 1000);
+      });
+    }
+
+    async function run() {
+      try {
+        const result1 = await question();
+        const result2 = await step1(result1);
+        const result3 = await step2(result2);
+        console.log(result3);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        console.log('finally');
+      }
+    }
+
+    run();
+
+    // 성공: fulfilled
+    // 실패: rejected
+    // 처리중: pending
+  </script>
+</body>
+</html>
