@@ -9,9 +9,18 @@
       width: 150px;
     }
 
+    #photo-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
     #photo-list img {
       width: 150px;
     }
+
+    /* .delete-btn {
+      pointer-events: none;
+    } */
   </style>
 </head>
 <body>
@@ -78,6 +87,39 @@
         preview.style.display = 'block';
       });
       reader.readAsDataURL(file);
+    });
+
+    // 사진 삭제
+    photoList.addEventListener('click', async e => {
+      // console.log(e.target.dataset.filename);
+      // console.log(e.target.nodeName);
+      // console.log(e.target.classList.contains('delete-btn'));
+      if (!e.target.classList.contains('delete-btn')) return;
+
+      const filename = e.target.dataset.filename;
+
+      const response = await fetch(
+        `${BASE_URL}/api/photos/${filename}`,
+        {
+          method: 'DELETE'
+        }
+      );
+
+      // 보내는 주소가 잘못되거나, 서버가 거절하거나 등등 문제가 발생하면..
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error);
+      }
+
+      alert('삭제 완료');
+      loadPhotoList();
+
+      // if (response.ok) {
+      //   alert('삭제 완료');
+      //   loadPhotoList();
+      // } else {
+      //   alert('삭제 실패');
+      // }
     });
 
     // Functions
@@ -163,13 +205,43 @@
     async function loadPhotoList() {
       const response = await fetch(`${BASE_URL}/api/photos`);
       const data = await response.json();
-      // console.log(data);
+
+      // data.photos.forEach(filename => {
+      //   const figure = document.createElement('figure');
+      //   const img = document.createElement('img');
+      //   const btn = document.createElement('button');
+      //   img.src = `${BASE_URL}/uploads/${filename}`;
+      //   btn.textContent = '삭제';
+      //   btn.classList.add('delete-btn');
+      //   btn.dataset.filename = filename;
+      //   figure.dataset.filename = filename;
+      //   figure.append(img, btn);
+      //   photoList.append(figure);
+      // });
+
+      // let template = '';
+      // data.photos.forEach(filename => {
+      //   template += `
+      //     <figure>
+      //       <img src="${BASE_URL}/uploads/${filename}" alt="">
+      //       <button class="delete-btn" data-filename="${filename}">삭제</button>
+      //     </figure>
+      //   `;
+      // });
+      // photoList.innerHTML = template;
+
+      const template = [];
       data.photos.forEach(filename => {
-        const img = document.createElement('img');
-        img.src = `${BASE_URL}/uploads/${filename}`;
-        img.dataset.filename = filename;
-        photoList.append(img);
+        const str = `
+          <figure>
+            <img src="${BASE_URL}/uploads/${filename}" alt="">
+            <button class="delete-btn" data-filename="${filename}">삭제</button>
+          </figure>
+        `;
+        template.push(str);
       });
+      // console.log(template.join(''));
+      photoList.innerHTML = template.join('');
     }
 
     function addLog(text) {
