@@ -4,11 +4,11 @@ const app = express();
 const PORT = 3000;
 
 // 미들웨어(함수) 사용하도록 추가
-app.use(express.static(path.join(__dirname, '../')));
+app.use(express.static(path.join(__dirname, '../public/')));
 
 // 어떤 경로로 요청하든 index.html을 전송
 app.get('/*any', (req, res) => {
-  res.sendFile(path.join(__dirname, '../index.html'));
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.listen(PORT, () => {

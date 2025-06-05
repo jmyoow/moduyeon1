@@ -10,6 +10,7 @@ export default function Content({ appElem, state }) {
     }
     // map 함수를 사용하여 각 아이템을 처리하고 문자열로 변환
     return this.state.map(item => {
+      console.log(item);
       if (item.email) {
         // users 데이터인 경우
         return `<div class="item user-item">

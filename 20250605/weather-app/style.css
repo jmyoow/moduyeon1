@@ -3,6 +3,7 @@ body {
   text-align: center;
   padding: 50px;
   background: #eef2f5;
+  transition: background 1s;
 }
 
 input {

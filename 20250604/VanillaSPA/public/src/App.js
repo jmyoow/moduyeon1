@@ -14,7 +14,7 @@ export default function App(appElem) {
   // 메뉴 컴포넌트 초기화
   const menu = new Menu({
     appElem,
-    initialState: '',
+    state: '',
     onClick: async (menuName) => {
       // 메뉴 클릭 시 URL을 변경하고 데이터를 업데이트합니다
       history.pushState(null, `${menuName}`, menuName);
@@ -25,7 +25,7 @@ export default function App(appElem) {
   // 콘텐츠 컴포넌트 초기화
   const content = new Content({
     appElem,
-    initialState: []
+    state: []
   });
 
   // 상태 업데이트 함수
@@ -41,7 +41,7 @@ export default function App(appElem) {
     this.setState({
       ...this.state,
       currentMenu: menuName,
-      items
+      items: items
     });
   };
 

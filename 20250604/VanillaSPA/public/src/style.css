@@ -51,6 +51,10 @@
   color: #666;
 }
 
+.user-item {
+  background: yellow;
+}
+
 .user-item h3 {
   margin: 0 0 10px 0;
   color: #333;

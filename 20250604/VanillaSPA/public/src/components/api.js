@@ -1,4 +1,4 @@
-const API_URL = 'https://jsonplaceholder.typicode.com';
+const API_URL = 'https://jsonplaceholder.typicode.com/';
 
 export async function request(endpoint, limit) {
   try {
@@ -11,6 +11,7 @@ export async function request(endpoint, limit) {
       throw new Error(`HTTP error: ${res.status}`);
     }
 
+    // 응답으로 서버에서 보내온 데이터가 JSON인지 체크
     const contentType = res.headers.get('content-type');
     if (contentType && contentType.includes('application/json')) {
       const data = await res.json();
