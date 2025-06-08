@@ -1,4 +1,4 @@
-const API_KEY = '127de5115e7b526001622be25611041f';
+const API_KEY = 'https://openweathermap.org/api에서 발급 받은 API 키를 넣으세요';
 
 const input = document.getElementById('city-input');
 const button = document.getElementById('search-btn');
