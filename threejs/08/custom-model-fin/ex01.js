@@ -38,8 +38,21 @@ scene.add(directionalLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Mesh
+// Loader
+const gltfLoader = new GLTFLoader();
 
+// Mesh
+gltfLoader.load(
+  // '/models/character.glb',
+  '/models/streetlight.glb',
+  // '/models/displayBoard.glb',
+  glb => {
+    console.log(glb.scene); // Group
+    console.log(glb.scene.children[0]); // Mesh
+    scene.add(glb.scene);
+    // scene.add(glb.scene.children[0]);
+  }
+);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);

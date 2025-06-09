@@ -49,10 +49,17 @@ directionalLight.shadow.mapSize.height = 1024;
 directionalLight.shadow.camera.near = 0.1;
 directionalLight.shadow.camera.far = 20;
 
+const pointLight = new THREE.PointLight('yellow', 10, 100);
+pointLight.position.set(1, 2, 1);
+pointLight.castShadow = true;
+scene.add( pointLight );
+
 scene.add(directionalLight);
 
 const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
 scene.add( helper );
+const pointLightHelper = new THREE.PointLightHelper( pointLight, 0.5 );
+scene.add( pointLightHelper );
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -86,7 +93,14 @@ renderer.setAnimationLoop(animate);
 const clock = new THREE.Clock();
 
 function animate() {
-  const delta = clock.getDelta();
+  // const delta = clock.getDelta();
+  const time = clock.getElapsedTime();
+
+  // pointLight.position.x = Math.sin(time * 0.2) * 2;
+  // pointLight.position.y = Math.sin(time * 3) * 0.5 + 1;
+
+  pointLight.position.x = Math.cos(time * 2) * 1.5;
+  pointLight.position.z = Math.sin(time * 2) * 1.5;
   
   renderer.render(scene, camera);
 }
