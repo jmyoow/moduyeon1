@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { TrackballControls } from 'three/addons/controls/TrackballControls.js';
 
-// ----- OrbitControls
+// ----- TrackballControls
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -23,8 +23,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 1.5;
-camera.position.z = 4;
+// camera.position.y = 1.5;
+camera.position.z = -0.5;
 scene.add(camera);
 
 // Light
@@ -37,13 +37,14 @@ directionalLight.position.z = 2;
 scene.add(directionalLight);
 
 // Controls
-const controls = new OrbitControls( camera, renderer.domElement );
-controls.enableDamping = true;
+const controls = new TrackballControls( camera, renderer.domElement );
+controls.noZoom = true;
 
 // Mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshStandardMaterial({
-  color: 'seagreen'
+  color: 'seagreen',
+  side: THREE.DoubleSide // 양면이 다 보이도록
 });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { DragControls } from 'three/addons/controls/DragControls.js';
 
-// ----- OrbitControls
+// ----- DragControls
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -23,8 +23,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 1.5;
-camera.position.z = 4;
+// camera.position.y = 1.5;
+camera.position.z = 5;
 scene.add(camera);
 
 // Light
@@ -36,17 +36,36 @@ directionalLight.position.x = 1;
 directionalLight.position.z = 2;
 scene.add(directionalLight);
 
-// Controls
-const controls = new OrbitControls( camera, renderer.domElement );
-controls.enableDamping = true;
-
 // Mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({
-  color: 'seagreen'
+const meshes = [];
+let mesh;
+let material;
+for (let i = 0; i < 20; i++) {
+  material = new THREE.MeshStandardMaterial({
+    color: `rgb(
+      ${ 50 + Math.floor(Math.random() * 205) },
+      ${ 50 + Math.floor(Math.random() * 205) },
+      ${ 50 + Math.floor(Math.random() * 205) }
+    )`
+  });
+  mesh = new THREE.Mesh(geometry, material);
+  mesh.position.x = (Math.random() - 0.5) * 5;
+  // mesh.position.x = Math.random() * 5;
+  mesh.position.y = (Math.random() - 0.5) * 5;
+  mesh.position.z = (Math.random() - 0.5) * 5;
+  mesh.name = `box-${i}`;
+  scene.add(mesh);
+
+  meshes.push(mesh);
+}
+
+// Controls
+const controls = new DragControls(meshes, camera, renderer.domElement);
+
+controls.addEventListener('dragstart', e => {
+  console.log(e.object.name);
 });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);
@@ -55,8 +74,6 @@ const clock = new THREE.Clock();
 
 function animate() {
   const delta = clock.getDelta();
-
-  controls.update(); // enableDamping으로 부드럽게 처리할 때 필요
   
   renderer.render(scene, camera);
 }

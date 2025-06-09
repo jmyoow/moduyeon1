@@ -11,6 +11,8 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+// 그림자 설정
+renderer.shadowMap.enabled = true;
 
 // Scene
 const scene = new THREE.Scene();
@@ -23,27 +25,52 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 camera.position.y = 1.5;
-camera.position.z = 4;
+camera.position.z = 10;
 scene.add(camera);
 
 // Light
-const ambientLight = new THREE.AmbientLight('white', 1);
+// MeshBasicMaterial은 조명(Light)가 필요 없음
+// AmbientLight는 전체적인 톤을 결정
+const ambientLight = new THREE.AmbientLight('white', 0.5);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight('white', 2);
+const directionalLight = new THREE.DirectionalLight('white', 10);
 directionalLight.position.x = 1;
-directionalLight.position.z = 2;
+directionalLight.position.y = 5;
+directionalLight.position.z = 3;
+// 그림자 캐스팅(만들기)
+directionalLight.castShadow = true;
+
 scene.add(directionalLight);
+
+const helper = new THREE.DirectionalLightHelper( directionalLight, 5 );
+scene.add( helper );
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({
+// const material = new THREE.MeshBasicMaterial({
+//   color: 'seagreen'
+// });
+const material = new THREE.MeshStandardMaterial({
   color: 'seagreen'
 });
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+const box = new THREE.Mesh(geometry, material);
+box.position.y = 0.8;
+// 박스에서 그림자 만들기
+box.castShadow = true;
+scene.add(box);
+
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(5, 5),
+  new THREE.MeshStandardMaterial({ color: 'gray' })
+);
+// Math.PI는 180도
+floor.rotation.x = -Math.PI/2;
+// 바닥에 그림자 생기게 하기
+floor.receiveShadow = true;
+scene.add(floor);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);
