@@ -1,6 +1,7 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// ----- position, scale
+// ----- 그룹 만들기
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -33,32 +34,51 @@ directionalLight.position.x = 1;
 directionalLight.position.z = 2;
 scene.add(directionalLight);
 
+// Conrols
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
 // Mesh
-const geometry = new THREE.BoxGeometry(1, 1, 1);
+const group = new THREE.Group();
+scene.add(group);
+
+const earth = new THREE.Mesh(
+  new THREE.SphereGeometry(1, 8, 8),
+  new THREE.MeshStandardMaterial({ color: 'seagreen' })
+);
+// earth.position.set(0, 0, 0);
+group.add(earth);
+
+const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
 const material = new THREE.MeshStandardMaterial({
   color: 'dodgerblue'
 });
 const box = new THREE.Mesh(geometry, material);
-scene.add(box);
+box.position.set(1.1, 0, 0);
+group.add(box);
 
-// camera.lookAt(box.position);
+const geometry2 = new THREE.BoxGeometry(0.2, 0.6, 0.2);
+const material2 = new THREE.MeshStandardMaterial({
+  color: 'yellow'
+});
+const box2 = new THREE.Mesh(geometry, material);
+box2.position.set(0, 0, 1.3);
+group.add(box2);
+
+camera.lookAt(earth.position);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);
 
 const clock = new THREE.Clock();
 
-camera.lookAt(box.position);
-
 function animate() {
   const delta = clock.getDelta();
 
-  // box.position.y = 2;
-  // box.position.set(0, 2, 0);
-  // box.scale.y = 2;
-  // box.scale.set(2, 1, 3);
+  controls.update();
 
-  // box.position.y += delta;
+  // group.rotation.y += delta;
+  // group.position.y += delta;
   
   renderer.render(scene, camera);
 }

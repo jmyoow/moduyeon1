@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import gsap from 'gsap';
 
 // ----- Geometry
 
@@ -22,39 +23,57 @@ const camera = new THREE.PerspectiveCamera(
   0.1, // near
   1000 // far
 );
-camera.position.set(0, 1, 3);
+camera.position.set(0, 0, 1);
 
 // Light
 const ambientLight = new THREE.AmbientLight('white', 0.5);
 scene.add(ambientLight);
 
-const directionalLight = new THREE.DirectionalLight('white', 2);
+const directionalLight = new THREE.DirectionalLight('white', 3);
 directionalLight.position.x = 1;
 directionalLight.position.z = 2;
 scene.add(directionalLight);
 
 // Mesh
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshStandardMaterial({
-  color: 'dodgerblue'
-});
-const box = new THREE.Mesh(geometry, material);
-scene.add(box);
+const geometry = new THREE.PlaneGeometry(5, 5, 32, 32); 
+const material = new THREE.MeshStandardMaterial( {
+  color: 'seagreen',
+  // wireframe: true,
+  flatShading: true
+} ); 
+const sphere = new THREE.Mesh( geometry, material );
+scene.add( sphere );
 
-const geometry2 = new THREE.ConeGeometry( 1, 2, 32 ); 
-const material2 = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-const cone = new THREE.Mesh(geometry2, material2 );
-scene.add( cone );
+// 정점 배열
+const positionAttr = geometry.attributes.position;
+const positionArray = positionAttr.array;
+const originalArray = positionArray.slice(); // 원본 복사
+const targetArray = positionArray.slice(); // 목표 위치 (gsap용)
 
-// camera.lookAt(box.position);
+// targetArray의 좌표를 살짝 흔들리도록 갱신 (gsap 애니메이션)
+for (let i = 0; i < targetArray.length; i += 3) {
+  const offset = (Math.random() - 0.5) * 0.2;
+
+  gsap.to(targetArray, {
+    [i]: originalArray[i] + offset,
+    [i + 1]: originalArray[i + 1] + offset,
+    [i + 2]: originalArray[i + 2] + offset,
+    duration: 2 + Math.random() * 2,
+    repeat: -1,
+    yoyo: true,
+    ease: 'sine.inOut'
+  });
+}
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);
 
-const clock = new THREE.Clock();
-
 function animate() {
-  const delta = clock.getDelta();
+  for (let i = 0; i < positionArray.length; i++) {
+    positionArray[i] = targetArray[i];
+  }
+
+  positionAttr.needsUpdate = true;
   
   renderer.render(scene, camera);
 }

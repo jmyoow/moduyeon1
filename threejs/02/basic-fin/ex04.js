@@ -5,7 +5,7 @@ import * as THREE from 'three';
 // Renderer
 const canvas = document.getElementById('three-canvas');
 const renderer = new THREE.WebGLRenderer({
-  canvas,
+  canvas: canvas,
   antialias: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);

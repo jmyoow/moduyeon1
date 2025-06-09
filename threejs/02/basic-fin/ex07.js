@@ -1,15 +1,15 @@
 import * as THREE from 'three';
+import gsap from 'gsap';
 
-// ----- position, scale
+// ----- 라이브러리를 이용한 애니메이션
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
 const renderer = new THREE.WebGLRenderer({
-  canvas,
+  canvas: canvas,
   antialias: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
-// 고해상도 지원
 renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 
 // Scene
@@ -22,16 +22,12 @@ const camera = new THREE.PerspectiveCamera(
   0.1, // near
   1000 // far
 );
-camera.position.set(0, 1, 3);
+camera.position.set(3, 1, 3);
 
 // Light
-const ambientLight = new THREE.AmbientLight('white', 0.5);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight('white', 2);
-directionalLight.position.x = 1;
-directionalLight.position.z = 2;
-scene.add(directionalLight);
+const spotLight = new THREE.SpotLight('white', 100);
+spotLight.position.set(1, 3, 3);
+scene.add(spotLight);
 
 // Mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -41,25 +37,34 @@ const material = new THREE.MeshStandardMaterial({
 const box = new THREE.Mesh(geometry, material);
 scene.add(box);
 
-// camera.lookAt(box.position);
+camera.lookAt(box.position);
 
 window.addEventListener('resize', setSize);
+
 renderer.setAnimationLoop(animate);
 
 const clock = new THREE.Clock();
 
-camera.lookAt(box.position);
+// gsap.to(
+//   box.position, // 바꿀 객체(오브젝트)
+//   {
+//     duration: 1,
+//     z: 3
+//   }
+// );
+
+gsap.from(
+  box.position, // 바꿀 객체(오브젝트)
+  {
+    duration: 1,
+    ease: "elastic",
+    z: 3
+  }
+);
 
 function animate() {
   const delta = clock.getDelta();
 
-  // box.position.y = 2;
-  // box.position.set(0, 2, 0);
-  // box.scale.y = 2;
-  // box.scale.set(2, 1, 3);
-
-  // box.position.y += delta;
-  
   renderer.render(scene, camera);
 }
 

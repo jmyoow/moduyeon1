@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
-// ----- position, scale
+// ----- 애니메이션
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
 const renderer = new THREE.WebGLRenderer({
-  canvas,
+  canvas: canvas,
   antialias: true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -22,16 +22,15 @@ const camera = new THREE.PerspectiveCamera(
   0.1, // near
   1000 // far
 );
-camera.position.set(0, 1, 3);
+// camera.position.x = 3;
+// camera.position.y = 1;
+// camera.position.z = 3;
+camera.position.set(3, 1, 3);
 
 // Light
-const ambientLight = new THREE.AmbientLight('white', 0.5);
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight('white', 2);
-directionalLight.position.x = 1;
-directionalLight.position.z = 2;
-scene.add(directionalLight);
+const spotLight = new THREE.SpotLight('white', 100);
+spotLight.position.set(1, 3, 3);
+scene.add(spotLight);
 
 // Mesh
 const geometry = new THREE.BoxGeometry(1, 1, 1);
@@ -41,27 +40,29 @@ const material = new THREE.MeshStandardMaterial({
 const box = new THREE.Mesh(geometry, material);
 scene.add(box);
 
-// camera.lookAt(box.position);
+camera.lookAt(box.position);
+
+// renderer.render(scene, camera);
 
 window.addEventListener('resize', setSize);
-renderer.setAnimationLoop(animate);
 
 const clock = new THREE.Clock();
 
-camera.lookAt(box.position);
-
 function animate() {
-  const delta = clock.getDelta();
+  // const time = clock.getElapsedTime();
+  const delta = clock.getDelta(); // animate의 실행 간격
+  // console.log(delta);
 
-  // box.position.y = 2;
-  // box.position.set(0, 2, 0);
-  // box.scale.y = 2;
-  // box.scale.set(2, 1, 3);
+  if (box.position.y > 3) box.position.y = 0;
+  // box.position.y += 0.01;
+  // box.position.y = time;
+  box.position.y += delta * 3;
 
-  // box.position.y += delta;
-  
   renderer.render(scene, camera);
+  // window.requestAnimationFrame(animate);
 }
+// animate();
+renderer.setAnimationLoop(animate);
 
 function setSize() {
   camera.aspect = window.innerWidth / window.innerHeight;

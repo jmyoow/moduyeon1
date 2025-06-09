@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-// ----- position, scale
+// ----- rotation
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -50,15 +50,24 @@ const clock = new THREE.Clock();
 
 camera.lookAt(box.position);
 
+// 라디안(Radian): 360도는 2파이
+// box.rotation.y = 0.3;
+// box.rotation.y = THREE.MathUtils.degToRad(45);
+
+box.rotation.reorder('YXZ');
+setTimeout(() => {
+  box.rotation.y = THREE.MathUtils.degToRad(45);
+  setTimeout(() => {
+    box.rotation.x = THREE.MathUtils.degToRad(30);
+  }, 1000);
+}, 1000);
+
 function animate() {
   const delta = clock.getDelta();
 
-  // box.position.y = 2;
-  // box.position.set(0, 2, 0);
-  // box.scale.y = 2;
-  // box.scale.set(2, 1, 3);
-
-  // box.position.y += delta;
+  // box.rotation.y += THREE.MathUtils.degToRad(delta*100);
+  // box.rotation.y += delta;
+  // box.rotation.y += delta;
   
   renderer.render(scene, camera);
 }
