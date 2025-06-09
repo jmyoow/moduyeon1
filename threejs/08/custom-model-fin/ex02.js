@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
-// ----- 특정 방향의 광선(Ray)에 맞은 Mesh 판별하기
+// ----- glb 애니메이션
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -14,6 +15,7 @@ renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
 
 // Scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color('lightblue');
 
 // Camera
 const camera = new THREE.PerspectiveCamera(
@@ -22,8 +24,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 1.5;
-camera.position.z = 4;
+camera.position.x = 1;
+camera.position.y = 1;
+camera.position.z = 2;
 scene.add(camera);
 
 // Light
@@ -37,37 +40,46 @@ scene.add(directionalLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Mesh
-const lineMaterial = new THREE.LineBasicMaterial({ color: 'yellow' });
-const points = [];
-points.push(new THREE.Vector3(0, 0, 100));
-points.push(new THREE.Vector3(0, 0, -100));
-const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
-const line = new THREE.Line(lineGeometry, lineMaterial);
-scene.add(line);
+// Loader
+const gltfLoader = new GLTFLoader();
+let mixer; // 애니메이션 믹서를 담을 변수
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({
-  color: 'seagreen'
-});
-const mesh = new THREE.Mesh(geometry, material);
-scene.add(mesh);
+// Mesh
+gltfLoader.load(
+  '/models/character.glb',
+  glb => {
+    console.log(glb);
+    // console.log(glb.scene); // Group
+    // console.log(glb.scene.children[0]); // Mesh
+    const character = glb.scene;
+    scene.add(character);
+    // scene.add(glb.scene.children[0]);
+    
+    mixer = new THREE.AnimationMixer(character);
+    const actions = [];
+    actions[0] = mixer.clipAction(glb.animations[0]);
+    actions[1] = mixer.clipAction(glb.animations[1]);
+    // actions[1].repetitions = 2;
+    actions[0].play(); 
+    actions[1].play();
+  },
+  undefined,
+  error => {
+    console.log('로드 실패');
+  }
+);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);
-
-const raycaster = new THREE.Raycaster();
 
 const clock = new THREE.Clock();
 
 function animate() {
   const delta = clock.getDelta();
-
-  const origin = new THREE.Vector3(0, 0, 100);
-  const direction = new THREE.Vector3(0, 0, -100);
-  direction.normalize();
-  raycaster.set(origin, direction);
   
+  // glb 애니메이션
+  if(mixer) mixer.update(delta);
+
   renderer.render(scene, camera);
 }
 

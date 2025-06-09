@@ -51,6 +51,10 @@ gltfLoader.load(
     console.log(glb.scene.children[0]); // Mesh
     scene.add(glb.scene);
     // scene.add(glb.scene.children[0]);
+  },
+  undefined,
+  error => {
+    console.log('로드 실패');
   }
 );
 
