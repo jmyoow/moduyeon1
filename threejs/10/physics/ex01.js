@@ -72,7 +72,6 @@ box.castShadow = true;
 scene.add(box);
 
 window.addEventListener('resize', setSize);
-renderer.setAnimationLoop(animate);
 
 SetRaycasterClick.init({
   scene,
@@ -84,6 +83,7 @@ SetRaycasterClick.init({
   }
 });
 
+renderer.setAnimationLoop(animate);
 function animate() {
   const time = clock.getElapsedTime();
   
