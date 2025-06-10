@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Scroll Road</title>
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.174.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.174.0/examples/jsm/",
+        "gsap": "https://cdn.skypack.dev/gsap",
+        "dat.gui": "https://cdn.jsdelivr.net/npm/three-dat.gui@2.0.7/+esm",
+        "three-dat.gui": "https://cdn.jsdelivr.net/npm/three-dat.gui@2.0.7/+esm"
+      }
+    }
+  </script>
+</head>
+<body>
+  <section class="photo-upload hidden">
+    <input type="file" id="file-input" accept="image/*" />
+    <img id="preview">
+    <button id="upload-btn">얼굴 사진 업로드</button>
+    <button id="close-btn">닫기</button>
+  </section>
+  <canvas id="three-canvas"></canvas>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
