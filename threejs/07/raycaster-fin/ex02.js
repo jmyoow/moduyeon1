@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import PreventDragClick from './PreventDragClick.js';
 
-// ----- 특정 방향의 광선(Ray)에 맞은 Mesh 판별하기
+// ----- 클릭한 Mesh 판별하기
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -38,14 +39,6 @@ scene.add(directionalLight);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Mesh
-const lineMaterial = new THREE.LineBasicMaterial({ color: 'yellow' });
-const points = [];
-points.push(new THREE.Vector3(0, 0, 100));
-points.push(new THREE.Vector3(0, 0, -100));
-const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
-const line = new THREE.Line(lineGeometry, lineMaterial);
-scene.add(line);
-
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({
   color: 'seagreen'
@@ -62,9 +55,34 @@ ball.name = 'myBall';
 scene.add(ball);
 
 window.addEventListener('resize', setSize);
+window.addEventListener('click', e => {
+  // if (preventDragClick.mouseMoved) return;
+  if (PreventDragClick.mouseMoved) return;
+
+  // console.log(e.clientX, e.clientY);
+  // console.log(e.clientX / window.innerWidth * 2 - 1);
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+  // 카메라 기준으로 ray 설정
+  raycaster.setFromCamera(mouse, camera);
+
+  const intersects = raycaster.intersectObjects(scene.children);
+  for (const item of intersects) {
+    if (item.object.isMesh) {
+      console.log(item.object)
+      // console.log(item.object.name);
+      item.object.material.color.set('hotpink');
+      break; // 광선에 처음 맞은 메쉬만 체크하고 반복문 빠져나옴
+    }
+  }
+});
 renderer.setAnimationLoop(animate);
 
+// const preventDragClick = new PreventDragClick(canvas);
+PreventDragClick.init(canvas);
 const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(); // 마우스 좌표를 담을 객체
 
 const clock = new THREE.Clock();
 
@@ -81,20 +99,11 @@ function animate() {
 
   // console.log(scene.children);
   // 먼저 모든 메쉬의 색상을 녹색으로
-  scene.children.forEach(child => {
-    if (child.isMesh) {
-      child.material.color.set('seagreen');
-    }
-  });
-
-  // scene.children을 해도 되고, 따로 배열에 Mesh들을 담아서 그 배열을 써도 됨
-  const intersects = raycaster.intersectObjects(scene.children);
-  for (const item of intersects) {
-    if (item.object.isMesh) {
-      console.log(item.object.name);
-      item.object.material.color.set('hotpink');
-    }
-  }
+  // scene.children.forEach(child => {
+  //   if (child.isMesh) {
+  //     child.material.color.set('seagreen');
+  //   }
+  // });
   
   renderer.render(scene, camera);
 }
