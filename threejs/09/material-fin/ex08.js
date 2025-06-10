@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// ----- MeshLambertMaterial, MeshPhongMaterial, MeshStandardMaterial
+// ----- HDRI Environment
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -11,6 +11,7 @@ const renderer = new THREE.WebGLRenderer({
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+renderer.shadowMap.enabled = true;
 
 // Scene
 const scene = new THREE.Scene();
@@ -22,8 +23,8 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.y = 1.5;
-camera.position.z = 4;
+camera.position.y = 0.7;
+camera.position.z = 1.5;
 scene.add(camera);
 
 // Light
@@ -33,36 +34,31 @@ scene.add(ambientLight);
 const directionalLight = new THREE.DirectionalLight('white', 2);
 directionalLight.position.x = 1;
 directionalLight.position.z = 2;
+directionalLight.castShadow = true;
 scene.add(directionalLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Mesh
-const geometry = new THREE.SphereGeometry(1, 16, 16);
-// 성능 좋음, 무반사
-const material1 = new THREE.MeshLambertMaterial({
-  color: 'deepskyblue'
-});
-// 중간 성능, 반사(어설픔)
-const material2 = new THREE.MeshPhongMaterial({
-  color: 'deepskyblue',
-  shininess: 100, // 반짝임 정도
-  specular: new THREE.Color(0x666666) // 흰색일 수록 빛나는 강도가 세짐
-});
-// 조금 무거움, 리얼한 반사(현실적)
-const material3 = new THREE.MeshStandardMaterial({
-  color: 'deepskyblue',
-  roughness: 0.3, // 0 ~ 1
-  metalness: 0.2
-});
+// 텍스쳐 로드
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load(
+  '/textures/IndoorEnvironmentHDRI013_2K-TONEMAPPED.jpg',
+  texture => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.environment = texture;
+    scene.background = texture;
+  }
+);
 
-const mesh1 = new THREE.Mesh(geometry, material1);
-const mesh2 = new THREE.Mesh(geometry, material2);
-const mesh3 = new THREE.Mesh(geometry, material3);
-mesh1.position.x = -2;
-mesh2.position.x = 0;
-mesh3.position.x = 2;
-scene.add(mesh1, mesh2, mesh3);
+// Mesh
+const geometry = new THREE.SphereGeometry(0.5, 64, 64);
+const material = new THREE.MeshStandardMaterial({
+  roughness: 0,
+  metalness: 1
+});
+const mesh = new THREE.Mesh(geometry, material);
+mesh.castShadow = true;
+scene.add(mesh);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);

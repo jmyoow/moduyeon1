@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// ----- MeshLambertMaterial, MeshPhongMaterial, MeshStandardMaterial
+// ----- 텍스쳐 이미지 로드
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -23,7 +23,7 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 camera.position.y = 1.5;
-camera.position.z = 4;
+camera.position.z = 2;
 scene.add(camera);
 
 // Light
@@ -37,32 +37,31 @@ scene.add(directionalLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Mesh
-const geometry = new THREE.SphereGeometry(1, 16, 16);
-// 성능 좋음, 무반사
-const material1 = new THREE.MeshLambertMaterial({
-  color: 'deepskyblue'
-});
-// 중간 성능, 반사(어설픔)
-const material2 = new THREE.MeshPhongMaterial({
-  color: 'deepskyblue',
-  shininess: 100, // 반짝임 정도
-  specular: new THREE.Color(0x666666) // 흰색일 수록 빛나는 강도가 세짐
-});
-// 조금 무거움, 리얼한 반사(현실적)
-const material3 = new THREE.MeshStandardMaterial({
-  color: 'deepskyblue',
-  roughness: 0.3, // 0 ~ 1
-  metalness: 0.2
-});
+// 텍스쳐 로드
+const textureLoader = new THREE.TextureLoader();
+const texture = textureLoader.load(
+  '/textures/rock/Rock043L_1K-JPG_Color.jpg',
+  () => {
+    console.log('로드 완료');
+  },
+  () => {
+    console.log('로드 중');
+  },
+  () => {
+    console.log('로드 에러');
+  }
+);
 
-const mesh1 = new THREE.Mesh(geometry, material1);
-const mesh2 = new THREE.Mesh(geometry, material2);
-const mesh3 = new THREE.Mesh(geometry, material3);
-mesh1.position.x = -2;
-mesh2.position.x = 0;
-mesh3.position.x = 2;
-scene.add(mesh1, mesh2, mesh3);
+// Mesh
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshStandardMaterial({
+  // color: 'orange'
+  map: texture,
+  roughness: 0,
+  // metalness: 0.5
+});
+const box = new THREE.Mesh(geometry, material);
+scene.add(box);
 
 window.addEventListener('resize', setSize);
 renderer.setAnimationLoop(animate);

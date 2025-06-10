@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CANVAS</title>
+  <style>
+    #my-canvas {
+      background: lightgray;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="my-canvas" width="500" height="500"></canvas>
+
+  <script>
+    const myCanvas = document.getElementById('my-canvas');
+    const context = myCanvas.getContext('2d');
+    
+    let x = 0;
+    function animate() {
+      context.clearRect(0, 0, myCanvas.width, myCanvas.height); // 전체 지우기
+
+      if (x > myCanvas.width) x = -150;
+      context.fillRect(x++, 100, 150, 150);
+      context.fillText('Canvas!!!', 200, 250);
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
+</body>
+</html>

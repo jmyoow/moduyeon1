@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-// ----- MeshLambertMaterial, MeshPhongMaterial, MeshStandardMaterial
+// ----- side
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -38,22 +38,25 @@ scene.add(directionalLight);
 const controls = new OrbitControls(camera, renderer.domElement);
 
 // Mesh
-const geometry = new THREE.SphereGeometry(1, 16, 16);
+const geometry = new THREE.SphereGeometry(1, 32, 32);
 // 성능 좋음, 무반사
 const material1 = new THREE.MeshLambertMaterial({
-  color: 'deepskyblue'
+  color: 'deepskyblue',
 });
 // 중간 성능, 반사(어설픔)
 const material2 = new THREE.MeshPhongMaterial({
   color: 'deepskyblue',
   shininess: 100, // 반짝임 정도
-  specular: new THREE.Color(0x666666) // 흰색일 수록 빛나는 강도가 세짐
+  specular: new THREE.Color(0x666666), // 흰색일 수록 빛나는 강도가 세짐
+  side: THREE.DoubleSide
+  // side: THREE.FrontSide
+  // side: THREE.BackSide
 });
 // 조금 무거움, 리얼한 반사(현실적)
 const material3 = new THREE.MeshStandardMaterial({
   color: 'deepskyblue',
   roughness: 0.3, // 0 ~ 1
-  metalness: 0.2
+  metalness: 0.2,
 });
 
 const mesh1 = new THREE.Mesh(geometry, material1);
