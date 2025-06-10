@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import PreventDragClick from './PreventDragClick.js';
+import SetRaycasterClick from './SetRaycasterClick.js';
 
-// ----- 클릭한 Mesh 판별하기
+// Raycaster 설정과 PreventDragClick을 한꺼번에 하는
+// SetRaycasterClick 모듈 사용
 
 // Renderer
 const canvas = document.getElementById('three-canvas');
@@ -47,50 +48,24 @@ const box = new THREE.Mesh(geometry, material);
 box.name = 'myBox'; // 레이캐스터에서 확인해보려고 설정한 이름
 scene.add(box);
 
-const ball = new THREE.Mesh(
-  new THREE.SphereGeometry(0.5, 16, 16),
-  new THREE.MeshBasicMaterial({ color: 'orange'} )
-);
-ball.name = 'myBall';
-scene.add(ball);
-
 window.addEventListener('resize', setSize);
-window.addEventListener('click', e => {
-  // if (preventDragClick.mouseMoved) return;
-  if (PreventDragClick.mouseMoved) return;
-
-  // console.log(e.clientX, e.clientY);
-  // console.log(e.clientX / window.innerWidth * 2 - 1);
-  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-
-  // 카메라 기준으로 ray 설정
-  raycaster.setFromCamera(mouse, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children);
-  for (const item of intersects) {
-    if (item.object.isMesh) {
-      console.log(item.object)
-      // console.log(item.object.name);
-      item.object.material.color.set('hotpink');
-      break; // 광선에 처음 맞은 메쉬만 체크하고 반복문 빠져나옴
-    }
-  }
-});
 renderer.setAnimationLoop(animate);
 
-// const preventDragClick = new PreventDragClick(canvas);
-PreventDragClick.init(canvas);
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2(); // 마우스 좌표를 담을 객체
+SetRaycasterClick.init({
+  scene,
+  canvas,
+  camera,
+  callback: (object) => {
+    // 클릭한 Mesh(object)에 대한 작업
+    console.log(object.name);
+    object.material.color.set('hotpink');
+  }
+});
 
 const clock = new THREE.Clock();
 
 function animate() {
   const time = clock.getElapsedTime();
-
-  box.position.y = Math.cos(time) * 2;
-  ball.position.x = Math.sin(time) * 2;
   
   renderer.render(scene, camera);
 }
