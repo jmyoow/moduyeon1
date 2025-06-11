@@ -153,34 +153,6 @@ new Decoration({
   }
 });
 
-// // 난간 생성
-// const railingWidth = 0.2;
-// const railingHeight = 1;
-// const railingDepth = roadLength;
-// const railingColor = 0xffffff;
-
-// // 왼쪽 난간
-// const railingGeometry = new THREE.BoxGeometry(railingWidth, railingHeight, railingDepth);
-// const railingMaterial = new THREE.MeshStandardMaterial({
-//   color: railingColor,
-//   transparent: true,
-//   opacity: 0.9,
-//   metalness: 0.5,
-//   roughness: 0.1
-// });
-// const leftRailing = new THREE.Mesh(railingGeometry, railingMaterial);
-// leftRailing.position.set(-2.5, railingHeight/2, -railingDepth/2);
-// leftRailing.castShadow = true;
-// leftRailing.receiveShadow = true;
-// scene.add(leftRailing);
-
-// // 오른쪽 난간
-// const rightRailing = new THREE.Mesh(railingGeometry, railingMaterial);
-// rightRailing.position.set(2.5, railingHeight/2, -railingDepth/2);
-// rightRailing.castShadow = true;
-// rightRailing.receiveShadow = true;
-// scene.add(rightRailing);
-
 // 전광판
 const displayBoard = new DisplayBoard({
   scene,
@@ -195,12 +167,13 @@ window.addEventListener('resize', setSize);
 // 캐릭터 메쉬 초기 위치는 Character 내부에서
 camera.position.z = -1.5;
 
-let isScrolling = false;
+let isScrolling = false; // 스크롤 중일 때 true
 let scrollTimeout;
 let currentZ = -5; // 시작 위치를 -5로 설정
 const maxZ = 40; // 캐릭터 이동 범위는 40으로 유지
 
 window.addEventListener('scroll', () => {
+  // 스크롤한 비율을 0 ~ 1 사이 소수로 표현
   const scrollRatio = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
   
   // 스크롤 시작할 때 run 애니메이션

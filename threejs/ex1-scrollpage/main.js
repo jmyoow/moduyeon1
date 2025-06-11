@@ -56,7 +56,7 @@ scene.add(floorMesh);
 
 const houses = [];
 houses.push(new House({ gltfLoader, scene, modelSrc: '/models/house.glb', x: -5, z: 20, height: 2 }));
-houses.push(new House({ gltfLoader, scene, modelSrc: '/models/house.glb', x: 7, z: 10, height: 2 }));
+houses.push(new House({ gltfLoader, scene, modelSrc: '/models/Raccoon.glb', x: 7, z: 10, height: 0.5 }));
 houses.push(new House({ gltfLoader, scene, modelSrc: '/models/house.glb', x: -10, z: 0, height: 2 }));
 houses.push(new House({ gltfLoader, scene, modelSrc: '/models/house.glb', x: 10, z: -10, height: 2 }));
 houses.push(new House({ gltfLoader, scene, modelSrc: '/models/house.glb', x: -5, z: -20, height: 2 }));
@@ -78,9 +78,13 @@ function draw() {
 let currentSection = 0;
 function setSection() {
 	const newSection = Math.round(window.scrollY / window.innerHeight);
+	// Math.floor 내림
+	// Math.round 반올림
+	// Math.ceil 올림
 
 	if (currentSection !== newSection) {
 		console.log('animation!!');
+		console.log(`currentSection: ${currentSection}, newSection: ${newSection}`);
 		gsap.to(
 			camera.position,
 			{

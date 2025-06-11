@@ -46,7 +46,8 @@ let mixer; // 애니메이션 믹서를 담을 변수
 
 // Mesh
 gltfLoader.load(
-  '/models/character.glb',
+  // '/models/character.glb',
+  '/models/robot.glb',
   glb => {
     console.log(glb);
     // console.log(glb.scene); // Group
@@ -60,7 +61,7 @@ gltfLoader.load(
     actions[0] = mixer.clipAction(glb.animations[0]);
     actions[1] = mixer.clipAction(glb.animations[1]);
     // actions[1].repetitions = 2;
-    actions[0].play(); 
+    // actions[0].play(); 
     actions[1].play();
   },
   undefined,

@@ -4,6 +4,7 @@
 
 body {
   height: 1000vh;
+  background: linear-gradient(rgba(0, 8, 48, 1) 20%, rgba(14, 18, 100, 1) 40%, rgba(114, 75, 125, 1) 70%);
 }
 
 #three-canvas {

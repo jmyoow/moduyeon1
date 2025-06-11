@@ -43,6 +43,7 @@ const gltfLoader = new GLTFLoader();
 
 // Mesh
 gltfLoader.load(
+  // '/models/desk.glb',
   // '/models/character.glb',
   '/models/streetlight.glb',
   // '/models/displayBoard.glb',
