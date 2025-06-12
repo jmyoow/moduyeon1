@@ -1,0 +1,11 @@
+body {
+	margin: 0;
+	font-family: sans-serif;
+}
+#info {
+	position: fixed;
+	left: 20px;
+	top: 20px;
+	z-index: 10;
+	color: white;
+}

@@ -1,0 +1,27 @@
+body {
+	margin: 0;
+	font-family: sans-serif;
+}
+#info {
+	position: fixed;
+	left: 20px;
+	top: 20px;
+}
+.panel-3d-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	perspective: 1000px;
+}
+.panel-3d {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 80vw;
+	height: 80vh;
+	font-size: 50px;
+	background: rgba(0, 0, 255, 0.5);
+	/* transform: rotateX(20deg); */
+}

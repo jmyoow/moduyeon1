@@ -1,0 +1,22 @@
+body {
+	margin: 0;
+	font-family: sans-serif;
+}
+#info {
+	position: fixed;
+	left: 20px;
+	top: 20px;
+}
+.section {
+	box-sizing: border-box;
+	padding: 5rem;
+	height: 100vh;
+}
+.section h2 {
+	margin: 0;
+	font-size: 10vmin;
+}
+.section:nth-child(odd) {
+	text-align: right;
+	background: pink;
+}
